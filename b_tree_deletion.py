@@ -1,5 +1,5 @@
-import sys
-import numpy as np
+"""RAM version of BTree"""
+glob_cmp_cnt = 0
 
 class BTreeNode(object):
     def __init__(self, _t, _leaf): 
@@ -70,9 +70,11 @@ class BTreeNode(object):
         """A function that returns the index of the first key that is 
         greater or equal to k."""
 #        print "BTreeNode.find_key()"
+        global glob_cmp_cnt
         idx = 0
         while idx < self.n and self.keys[idx] < k:
             idx += 1
+            glob_cmp_cnt += 1
         
         return idx
     
@@ -166,10 +168,12 @@ class BTreeNode(object):
         """A wrapper function to remove the key k in sub-tree rooted 
         with this node."""
 #        print "BTreeNode.remove()"
+        global glob_cmp_cnt
         idx = self.find_key(k)
         
         # The key to be removed is present in this node
         if idx < self.n and self.keys[idx] == k:
+            glob_cmp_cnt += 1
             
             if self.is_leaf:
                 self.remove_from_leaf(idx)
@@ -504,28 +508,27 @@ class BTree(object):
         
 
 
-def main():
-    
-    t = BTree(2)
-    
-    
-    for i in xrange(10):
-        t.insert(i)
-        t.traverse()
-        print
-    
-    arr = range(10)
-    np.random.shuffle(arr)
-    for i in arr:
-        t.remove(i)
-        print "Removed %r: " % i
-        t.traverse()
-        print
-    
-#    print "Traversal of tree constructed is"
-    
+#def main():
+#    
+#    t = BTree(3)
+#    
+#    
+#    for i in xrange(10):
+#        t.insert(i)
+#        t.traverse()
+#        print
+#    
+#    arr = range(10)
+#    np.random.shuffle(arr)
+#    for i in arr:
+#        t.remove(i)
+#        print "Removed %r: " % i
+#        t.traverse()
+#        print
+#    
+#    
 
 
-if __name__ == '__main__':
-    sys.exit(main())
+#if __name__ == '__main__':
+#    sys.exit(main())
 
